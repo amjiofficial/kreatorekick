@@ -18,25 +18,53 @@ body {
   min-height: 100vh;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text);
-  background: radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.08), transparent 25%),
-    radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.1), transparent 20%),
+  background: radial-gradient(circle at 15% 20%, rgba(45, 212, 191, 0.15), transparent 30%),
+    radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.14), transparent 24%),
     linear-gradient(135deg, #0e141b 0%, #0f1725 45%, #0c1118 100%);
   padding: 0 16px 64px;
 }
 
 .site {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
+  position: relative;
 }
 
 .hero {
-  padding: 72px 0 40px;
+  padding: 84px 0 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  filter: blur(90px);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.glow-1 {
+  width: 240px;
+  height: 240px;
+  background: rgba(45, 212, 191, 0.3);
+  top: 0;
+  left: 0;
+}
+
+.glow-2 {
+  width: 280px;
+  height: 280px;
+  background: rgba(245, 158, 11, 0.28);
+  right: 5%;
+  top: 8%;
 }
 
 .hero-inner {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 36px;
   align-items: center;
 }
 
@@ -44,13 +72,13 @@ body {
   display: flex;
   gap: 14px;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .brand-mark {
-  width: 54px;
-  height: 54px;
-  border-radius: 14px;
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
   background: linear-gradient(145deg, var(--accent), var(--accent-2));
   color: #0f1115;
   font-weight: 800;
@@ -60,30 +88,39 @@ body {
   box-shadow: var(--shadow);
 }
 
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 4px;
+}
+
 .brand-title {
   margin: 0;
   font-family: 'Manrope', 'Inter', sans-serif;
-  font-size: 32px;
-  letter-spacing: -0.5px;
+  font-size: 42px;
+  letter-spacing: -0.6px;
 }
 
 .brand-sub {
-  margin: 4px 0 0;
-  color: var(--muted);
+  margin: 6px 0 0;
+  color: #d7e4f5;
 }
 
 .tagline {
   font-size: 18px;
-  max-width: 520px;
+  max-width: 560px;
   color: #d7e4f5;
-  line-height: 1.5;
-  margin: 0 0 20px;
+  line-height: 1.6;
+  margin: 14px 0 18px;
 }
 
 .cta-row {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  margin-bottom: 14px;
 }
 
 .btn {
@@ -94,7 +131,7 @@ body {
   border-radius: 12px;
   font-weight: 700;
   text-decoration: none;
-  transition: transform 120ms ease, box-shadow 200ms ease, background 200ms ease, color 200ms ease;
+  transition: transform 120ms ease, box-shadow 200ms ease, background 200ms ease, color 200ms ease, border 200ms ease;
   border: 1px solid transparent;
 }
 
@@ -120,6 +157,45 @@ body {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #0d1016;
+  box-shadow: 0 0 0 6px rgba(13, 16, 22, 0.15);
+}
+
+.meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.pulse {
+  position: relative;
+}
+
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.35), transparent 60%);
+  opacity: 0.7;
+  animation: pulse 1600ms ease-in-out infinite;
+  z-index: -1;
+}
+
 .hero-right {
   display: grid;
   gap: 16px;
@@ -127,20 +203,20 @@ body {
 
 .me-card-large {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   gap: 14px;
   align-items: center;
   background: var(--card);
-  padding: 14px;
-  border-radius: 16px;
+  padding: 16px;
+  border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: var(--shadow);
 }
 
 .me-avatar {
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
   object-fit: cover;
   background: linear-gradient(135deg, rgba(45, 212, 191, 0.35), rgba(245, 158, 11, 0.35));
 }
@@ -152,7 +228,7 @@ body {
 
 .me-name {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .me-role {
@@ -167,7 +243,7 @@ body {
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
 }
 
@@ -178,25 +254,30 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.stat-label {
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
 .stat-num {
   font-size: 18px;
   font-weight: 800;
-  margin-bottom: 4px;
 }
 
-.stat-label {
-  color: var(--muted);
-  margin: 0;
+.section-head {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .section-title {
-  margin: 0 0 12px;
-  font-size: 20px;
+  margin: 0;
+  font-size: 22px;
   letter-spacing: -0.2px;
 }
 
 .features {
-  margin-top: 14px;
+  margin-top: 24px;
 }
 
 .features-grid {
@@ -211,11 +292,17 @@ body {
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: var(--shadow);
+  transition: transform 120ms ease, border-color 160ms ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .icon-circle {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   display: grid;
   place-items: center;
@@ -235,12 +322,12 @@ body {
 }
 
 .team {
-  margin-top: 28px;
+  margin-top: 32px;
 }
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 12px;
 }
 
@@ -251,6 +338,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
+  transition: transform 120ms ease, border-color 160ms ease;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .team-card::after {
@@ -298,11 +391,46 @@ body {
   font-weight: 700;
 }
 
+.badge.accent {
+  background: rgba(245, 158, 11, 0.18);
+  color: #0d1016;
+}
+
 .site-footer {
-  margin-top: 40px;
+  margin-top: 44px;
   text-align: center;
   color: var(--muted);
   font-size: 14px;
+}
+
+.rise {
+  animation: rise 700ms ease forwards;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
 }
 
 @media (max-width: 600px) {
@@ -311,11 +439,11 @@ body {
   }
 
   .hero {
-    padding: 48px 0 32px;
+    padding: 56px 0 32px;
   }
 
   .brand-title {
-    font-size: 28px;
+    font-size: 32px;
   }
 
   .tagline {

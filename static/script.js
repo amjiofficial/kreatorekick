@@ -1,9 +1,9 @@
 const profile = {
   name: 'Amjad Ullah',
   role: 'Founder · Product Designer',
-  githubProfile: 'https://github.com/your-github',
-  githubRepo: 'https://github.com/your-github/kreativekick',
-  avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+  githubProfile: 'https://github.com/amjiofficial',
+  githubRepo: 'https://github.com/amjiofficial/kreatorekick',
+  avatar: 'https://avatars.githubusercontent.com/u/66307277?v=4',
   launch: '2024',
   teamSize: 'OSAM & Professional'
 };
@@ -13,19 +13,29 @@ const teamMembers = [
     name: 'Amjad Ullah',
     role: 'Product Design',
     focus: 'Experience architecture & visual systems',
-    tag: 'Founder'
+    tag: 'Founder',
+    github: 'https://github.com/amjiofficial'
   },
   {
-    name: 'Kompass Engineering',
+    name: 'Saqib Ullah',
     role: 'Platform Engineering',
-    focus: 'Infrastructure, performance, reliability',
-    tag: 'Core Team'
+    focus: 'APIs, performance, reliability',
+    tag: 'Engineer',
+    github: 'https://github.com/saqib77official'
   },
   {
-    name: 'Product Guild',
-    role: 'Research & Strategy',
-    focus: 'Discovery, validation, and insights',
-    tag: 'Advisory'
+    name: 'Abdul Samad',
+    role: 'Product Engineering',
+    focus: 'Frontline builds & delivery',
+    tag: 'Engineer',
+    github: 'https://github.com/abdulsamad255'
+  },
+  {
+    name: 'Fateh Ullah',
+    role: 'Product Strategy',
+    focus: 'Direction, validation, insights',
+    tag: 'Advisor',
+    github: 'https://github.com/fatehullah778866'
   }
 ];
 
@@ -45,7 +55,7 @@ function setProfile() {
   if (roleEl) roleEl.textContent = profile.role;
   if (ghLink) {
     ghLink.href = profile.githubProfile;
-    ghLink.textContent = 'GitHub Profile';
+    ghLink.textContent = 'GitHub';
   }
   if (ghCta) {
     ghCta.href = profile.githubRepo;
@@ -82,10 +92,18 @@ function renderTeam() {
     badge.className = 'badge';
     badge.textContent = member.tag;
 
+    const link = document.createElement('a');
+    link.href = member.github;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'GitHub';
+    link.className = 'me-links';
+
     content.appendChild(name);
     content.appendChild(role);
     content.appendChild(focus);
     content.appendChild(badge);
+    content.appendChild(link);
     card.appendChild(content);
     grid.appendChild(card);
   });
