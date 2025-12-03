@@ -1,3 +1,3 @@
-﻿module kreativekick
+module kreativekick
 
 go 1.22
