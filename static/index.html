@@ -36,7 +36,7 @@
     <section id="features" class="features">
       <div class="section-head center">
         <p class="eyebrow purple">Core Features</p>
-        <h3 class="section-title big">What’s landing first</h3>
+        <h3 class="section-title big">What's landing first</h3>
         <p class="section-sub">A focused drop of capabilities to ship and grow with confidence.</p>
       </div>
       <div class="features-grid">
@@ -71,11 +71,55 @@
       </div>
     </section>
 
+    <section id="personal-info" class="personal">
+      <div class="section-head center">
+        <p class="eyebrow purple">Personal Information</p>
+        <h3 class="section-title big">Capture details fast</h3>
+        <p class="section-sub">Add a name and father name, then update or delete right below.</p>
+      </div>
+      <form id="personal-form" class="form-card" novalidate>
+        <div class="form-grid">
+          <label class="field">
+            <span class="field-label">Name</span>
+            <input id="person-name" name="name" type="text" placeholder="Enter name" required>
+          </label>
+          <label class="field">
+            <span class="field-label">Father Name</span>
+            <input id="person-father" name="fatherName" type="text" placeholder="Enter father name" required>
+          </label>
+          <button type="submit" class="btn btn-primary form-submit">Save person</button>
+        </div>
+        <p id="form-status" class="form-status" aria-live="polite"></p>
+      </form>
+      <div class="table-card">
+        <div class="table-head">
+          <h4 class="table-title">Personal Information table</h4>
+          <p class="table-sub">Manage entries quickly — edit or delete anytime.</p>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table" id="personal-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Father Name</th>
+                <th scope="col" class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="personal-body">
+              <tr class="empty-row">
+                <td colspan="3">No records yet. Add a person to see it here.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <section class="team" id="team">
       <div class="section-head center">
         <p class="eyebrow purple">Team</p>
         <h3 class="section-title big">The crew shipping KreativeKick</h3>
-        <p class="section-sub">Product, engineering, and strategy — all-in on launch.</p>
+        <p class="section-sub">Product, engineering, and strategy - all-in on launch.</p>
       </div>
       <div class="team-grid" id="team-grid"></div>
     </section>
