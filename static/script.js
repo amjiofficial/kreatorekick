@@ -3,7 +3,7 @@ const profile = {
   role: 'Founder · Product Designer',
   githubProfile: 'https://github.com/amjiofficial',
   githubRepo: 'https://github.com/amjiofficial/kreatorekick',
-  avatar: 'https://avatars.githubusercontent.com/u/66307277?v=4',
+  avatar: 'https://github.com/amjiofficial.png',
   launch: '2024',
   teamSize: 'OSAM & Professional'
 };
@@ -14,28 +14,32 @@ const teamMembers = [
     role: 'Product Design',
     focus: 'Experience architecture & visual systems',
     tag: 'Founder',
-    github: 'https://github.com/amjiofficial'
+    github: 'https://github.com/amjiofficial',
+    avatar: 'https://github.com/amjiofficial.png'
   },
   {
     name: 'Saqib Ullah',
     role: 'Platform Engineering',
     focus: 'APIs, performance, reliability',
     tag: 'Engineer',
-    github: 'https://github.com/saqib77official'
+    github: 'https://github.com/saqib77official',
+    avatar: 'https://github.com/saqib77official.png'
   },
   {
     name: 'Abdul Samad',
     role: 'Product Engineering',
     focus: 'Frontline builds & delivery',
     tag: 'Engineer',
-    github: 'https://github.com/abdulsamad255'
+    github: 'https://github.com/abdulsamad255',
+    avatar: 'https://github.com/abdulsamad255.png'
   },
   {
     name: 'Fateh Ullah',
     role: 'Product Strategy',
     focus: 'Direction, validation, insights',
     tag: 'Advisor',
-    github: 'https://github.com/fatehullah778866'
+    github: 'https://github.com/fatehullah778866',
+    avatar: 'https://github.com/fatehullah778866.png'
   }
 ];
 
@@ -76,6 +80,11 @@ function renderTeam() {
     const content = document.createElement('div');
     content.className = 'team-card-content';
 
+    const avatar = document.createElement('img');
+    avatar.className = 'team-avatar';
+    avatar.src = member.avatar;
+    avatar.alt = member.name;
+
     const name = document.createElement('h4');
     name.className = 'team-name';
     name.textContent = member.name;
@@ -97,8 +106,9 @@ function renderTeam() {
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.textContent = 'GitHub';
-    link.className = 'me-links';
+    link.className = 'profile-link';
 
+    content.appendChild(avatar);
     content.appendChild(name);
     content.appendChild(role);
     content.appendChild(focus);
