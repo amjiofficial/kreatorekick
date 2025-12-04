@@ -85,8 +85,10 @@ function setProfile() {
   const ghCta = document.getElementById('github-cta');
   const launch = document.getElementById('stat-launch');
   const team = document.getElementById('stat-team');
+  const navAvatar = document.getElementById('nav-avatar');
 
   loadAvatar(avatar, profile.name, profile.avatar);
+  loadAvatar(navAvatar, profile.name, profile.avatar);
   if (nameEl) nameEl.textContent = profile.name;
   if (roleEl) roleEl.textContent = profile.role;
   if (ghLink) {
@@ -167,7 +169,11 @@ function setupNavActions() {
   const personalSection = document.getElementById('personal-info');
   const statusEl = document.getElementById('form-status');
   const navToggle = document.getElementById('nav-toggle');
-  const navLinks = document.getElementById('nav-links');
+  const overlay = document.getElementById('nav-overlay');
+  const drawer = document.getElementById('mobile-drawer');
+  const drawerClose = drawer ? drawer.querySelector('.drawer-close') : null;
+  const drawerLinks = drawer ? drawer.querySelector('.drawer-links') : null;
+  let drawerOpen = false;
 
   if (!recordsBtn) return;
 
@@ -183,21 +189,53 @@ function setupNavActions() {
     }
   });
 
-  if (navToggle && navLinks) {
-    const toggle = () => {
-      const isOpen = navLinks.classList.toggle('open');
-      navToggle.classList.toggle('open', isOpen);
-      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    };
-    navToggle.addEventListener('click', toggle);
-    navLinks.addEventListener('click', (e) => {
-      if (e.target instanceof HTMLAnchorElement) {
-        navLinks.classList.remove('open');
-        navToggle.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
+  const getFocusable = () =>
+    drawer?.querySelectorAll('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])');
+
+  const setDrawerState = (isOpen) => {
+    drawerOpen = isOpen;
+    drawer?.classList.toggle('open', isOpen);
+    overlay?.classList.toggle('open', isOpen);
+    navToggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (isOpen) {
+      const focusable = getFocusable();
+      focusable && focusable[0]?.focus();
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      navToggle?.focus();
+    }
+  };
+
+  navToggle?.addEventListener('click', () => setDrawerState(true));
+  overlay?.addEventListener('click', () => setDrawerState(false));
+  drawerClose?.addEventListener('click', () => setDrawerState(false));
+  drawerLinks?.addEventListener('click', (e) => {
+    if (e.target instanceof HTMLAnchorElement) {
+      setDrawerState(false);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!drawerOpen) return;
+    if (e.key === 'Escape') {
+      setDrawerState(false);
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusable = getFocusable();
+      if (!focusable || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
-    });
-  }
+    }
+  });
 }
 
 async function renderPersonalTable() {

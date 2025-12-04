@@ -11,6 +11,11 @@
 <body>
   <nav class="top-nav">
     <div class="nav-inner">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <div class="nav-brand">
         <span class="nav-logo" aria-hidden="true">
           <svg viewBox="0 0 64 64" role="presentation">
@@ -29,18 +34,19 @@
           <span class="nav-tagline">Launch Studio</span>
         </div>
       </div>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="nav-links" id="nav-links">
+
+      <div class="nav-links" aria-label="Main navigation">
         <a href="#features">Features</a>
         <a href="#personal-info">Personal Info</a>
         <a href="#team">Team</a>
       </div>
+
+      <div class="nav-avatar-wrap">
+        <img id="nav-avatar" class="nav-avatar" alt="Profile avatar">
+      </div>
+
       <div class="nav-actions">
-        <button id="records-btn" class="btn btn-ghost nav-action" type="button">View Records</button>
+        <button id="records-btn" class="btn btn-primary" type="button">View Records</button>
       </div>
     </div>
   </nav>
