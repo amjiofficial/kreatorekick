@@ -45,6 +45,37 @@ const teamMembers = [
 
 const personalRecords = [];
 let editingId = null;
+let filterTerm = '';
+
+function avatarFallback(name) {
+  const initials = (name || 'K K')
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
+      <defs>
+        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#4fe3c1"/>
+          <stop offset="100%" stop-color="#f6c452"/>
+        </linearGradient>
+      </defs>
+      <rect width="160" height="160" rx="32" fill="url(#g)"/>
+      <text x="50%" y="55%" text-anchor="middle" fill="#061020" font-family="Inter, Arial" font-size="64" font-weight="800" dy=".35em">${initials}</text>
+    </svg>
+  `;
+  return `data:image/svg+xml;base64,${btoa(svg)}`;
+}
+
+function loadAvatar(imgEl, name, url) {
+  if (!imgEl) return;
+  imgEl.src = url;
+  imgEl.onerror = () => {
+    imgEl.src = avatarFallback(name);
+  };
+}
 
 function setProfile() {
   const avatar = document.getElementById('me-avatar');
@@ -55,9 +86,7 @@ function setProfile() {
   const launch = document.getElementById('stat-launch');
   const team = document.getElementById('stat-team');
 
-  if (avatar) {
-    avatar.src = profile.avatar;
-  }
+  loadAvatar(avatar, profile.name, profile.avatar);
   if (nameEl) nameEl.textContent = profile.name;
   if (roleEl) roleEl.textContent = profile.role;
   if (ghLink) {
@@ -78,15 +107,15 @@ function renderTeam() {
 
   teamMembers.forEach((member) => {
     const card = document.createElement('article');
-    card.className = 'team-card';
+    card.className = 'team-card card-client';
 
     const content = document.createElement('div');
     content.className = 'team-card-content';
 
     const avatar = document.createElement('img');
     avatar.className = 'team-avatar';
-    avatar.src = member.avatar;
     avatar.alt = member.name;
+    loadAvatar(avatar, member.name, member.avatar);
 
     const name = document.createElement('h4');
     name.className = 'team-name';
@@ -104,22 +133,71 @@ function renderTeam() {
     badge.className = 'badge';
     badge.textContent = member.tag;
 
+    const social = document.createElement('div');
+    social.className = 'social-media';
+
     const link = document.createElement('a');
     link.href = member.github;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.textContent = 'GitHub';
-    link.className = 'profile-link';
+    link.ariaLabel = `${member.name} on GitHub`;
+    link.title = 'GitHub';
+    link.innerHTML = `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.43 7.86 10.96.58.11.79-.25.79-.56l-.01-2.03c-3.2.69-3.88-1.37-3.88-1.37-.53-1.35-1.3-1.71-1.3-1.71-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.77 2.72 1.26 3.38.96.11-.75.41-1.26.74-1.55-2.55-.29-5.24-1.28-5.24-5.71 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.44.11-3 0 0 .98-.31 3.2 1.18a11.1 11.1 0 0 1 5.83 0c2.22-1.49 3.2-1.18 3.2-1.18.63 1.56.23 2.71.11 3 .74.81 1.19 1.84 1.19 3.1 0 4.44-2.7 5.41-5.27 5.7.42.37.8 1.1.8 2.22l-.01 3.29c0 .31.21.68.8.56A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+      </svg>
+      <span class="tooltip-social">GitHub</span>
+    `;
 
     content.appendChild(avatar);
     content.appendChild(name);
     content.appendChild(role);
     content.appendChild(focus);
     content.appendChild(badge);
-    content.appendChild(link);
+    social.appendChild(link);
+    content.appendChild(social);
     card.appendChild(content);
     grid.appendChild(card);
   });
+}
+
+function setupNavActions() {
+  const recordsBtn = document.getElementById('records-btn');
+  const tableCard = document.getElementById('personal-table-card');
+  const personalSection = document.getElementById('personal-info');
+  const statusEl = document.getElementById('form-status');
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  if (!recordsBtn) return;
+
+  recordsBtn.addEventListener('click', async () => {
+    personalSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    await fetchPersonalRecords((message) => {
+      if (statusEl) statusEl.textContent = 'Records refreshed.';
+      return message;
+    });
+    if (tableCard) {
+      tableCard.classList.add('pulse');
+      setTimeout(() => tableCard.classList.remove('pulse'), 1200);
+    }
+  });
+
+  if (navToggle && navLinks) {
+    const toggle = () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    };
+    navToggle.addEventListener('click', toggle);
+    navLinks.addEventListener('click', (e) => {
+      if (e.target instanceof HTMLAnchorElement) {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 }
 
 async function renderPersonalTable() {
@@ -128,18 +206,26 @@ async function renderPersonalTable() {
 
   body.innerHTML = '';
 
-  if (personalRecords.length === 0) {
+  const term = filterTerm.trim().toLowerCase();
+  const rows = term
+    ? personalRecords.filter(
+        (rec) =>
+          rec.name?.toLowerCase().includes(term) || rec.fatherName?.toLowerCase().includes(term)
+      )
+    : personalRecords;
+
+  if (rows.length === 0) {
     const empty = document.createElement('tr');
     empty.className = 'empty-row';
     const cell = document.createElement('td');
     cell.colSpan = 3;
-    cell.textContent = 'No records yet. Add a person to see it here.';
+    cell.textContent = term ? 'No matching records.' : 'No records yet. Add a person to see it here.';
     empty.appendChild(cell);
     body.appendChild(empty);
     return;
   }
 
-  personalRecords.forEach((record) => {
+  rows.forEach((record) => {
     const row = document.createElement('tr');
 
     const nameCell = document.createElement('td');
@@ -291,8 +377,24 @@ function setupPersonalForm() {
   fetchPersonalRecords(setStatus);
 }
 
+function setupSearchBar() {
+  const searchInput = document.getElementById('search-input');
+  const searchBtn = document.getElementById('search-btn');
+  if (!searchInput || !searchBtn) return;
+
+  const applySearch = () => {
+    filterTerm = searchInput.value || '';
+    renderPersonalTable();
+  };
+
+  searchBtn.addEventListener('click', applySearch);
+  searchInput.addEventListener('input', applySearch);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   setProfile();
   renderTeam();
+  setupNavActions();
   setupPersonalForm();
+  setupSearchBar();
 });

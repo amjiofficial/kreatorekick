@@ -3,12 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>KreativeKick — Coming Soon</title>
-  <meta name="description" content="KreativeKick — by Kompass Technologies Private Limited. Coming soon.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Manrope:wght@600;800&display=swap" rel="stylesheet">
+  <title>KreativeKick - Coming Soon</title>
+  <meta name="description" content="KreativeKick - by Kompass Technologies Private Limited. Coming soon.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="nav-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="presentation">
+            <path d="M12 12h40v40H12z" fill="url(#grad)" opacity="0.12"/>
+            <path d="M20 18h8.8l6.4 9.2 6.4-9.2H50L38.6 32.4 50 46h-8.8l-6-8.8-6 8.8H20l11.4-13.6z" fill="#05101f"/>
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4fe3c1"/>
+                <stop offset="100%" stop-color="#f6c452"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <div class="nav-brand-text">
+          <span class="nav-name">KreativeKick</span>
+          <span class="nav-tagline">Launch Studio</span>
+        </div>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="#features">Features</a>
+        <a href="#personal-info">Personal Info</a>
+        <a href="#team">Team</a>
+      </div>
+      <div class="nav-actions">
+        <button id="records-btn" class="btn btn-ghost nav-action" type="button">View Records</button>
+      </div>
+    </div>
+  </nav>
   <main class="site">
     <header class="hero light">
       <div class="halo halo-1"></div>
@@ -91,10 +126,16 @@
         </div>
         <p id="form-status" class="form-status" aria-live="polite"></p>
       </form>
-      <div class="table-card">
+      <div class="table-card" id="personal-table-card">
         <div class="table-head">
           <h4 class="table-title">Personal Information table</h4>
-          <p class="table-sub">Manage entries quickly — edit or delete anytime.</p>
+          <div class="table-actions">
+            <p class="table-sub">Manage entries quickly - edit or delete anytime.</p>
+            <div class="search-bar">
+              <input id="search-input" type="search" placeholder="Search name or father name">
+              <button id="search-btn" type="button" class="btn btn-ghost">Search</button>
+            </div>
+          </div>
         </div>
         <div class="table-wrapper">
           <table class="data-table" id="personal-table">
@@ -124,9 +165,6 @@
       <div class="team-grid" id="team-grid"></div>
     </section>
 
-    <footer class="site-footer">
-      <p>© Kompass Technologies Private Limited — KreativeKick</p>
-    </footer>
   </main>
   <script src="script.js"></script>
 </body>
