@@ -138,6 +138,10 @@ body {
   flex-wrap: wrap;
 }
 
+.nav-links.open {
+  display: flex;
+}
+
 .nav-links a {
   color: rgba(229, 231, 235, 0.8);
   text-decoration: none;
@@ -201,7 +205,7 @@ body {
   height: 100vh;
   width: 80%;
   max-width: 360px;
-  background: var(--nav-panel);
+  background: var(--nav-bg);
   color: var(--nav-text);
   box-shadow: 12px 0 32px rgba(0, 0, 0, 0.32);
   transform: translateX(-100%);
@@ -991,10 +995,23 @@ body {
 
   .nav-inner {
     gap: 10px;
+    justify-content: flex-start;
   }
 
   .nav-links {
+    position: absolute;
+    top: 60px;
+    left: 12px;
+    right: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    background: rgba(17, 24, 39, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
     display: none;
+    z-index: 9;
   }
 
   .nav-actions {
@@ -1004,6 +1021,7 @@ body {
   .nav-toggle {
     display: inline-flex;
     order: -1;
+    margin-right: 8px;
   }
 
   .hero {

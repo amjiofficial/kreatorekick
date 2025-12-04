@@ -169,11 +169,7 @@ function setupNavActions() {
   const personalSection = document.getElementById('personal-info');
   const statusEl = document.getElementById('form-status');
   const navToggle = document.getElementById('nav-toggle');
-  const overlay = document.getElementById('nav-overlay');
-  const drawer = document.getElementById('mobile-drawer');
-  const drawerClose = drawer ? drawer.querySelector('.drawer-close') : null;
-  const drawerLinks = drawer ? drawer.querySelector('.drawer-links') : null;
-  let drawerOpen = false;
+  const navLinks = document.getElementById('nav-links');
 
   if (!recordsBtn) return;
 
@@ -189,51 +185,15 @@ function setupNavActions() {
     }
   });
 
-  const getFocusable = () =>
-    drawer?.querySelectorAll('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])');
-
-  const setDrawerState = (isOpen) => {
-    drawerOpen = isOpen;
-    drawer?.classList.toggle('open', isOpen);
-    overlay?.classList.toggle('open', isOpen);
+  navToggle?.addEventListener('click', () => {
+    const isOpen = navLinks?.classList.toggle('open');
     navToggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    if (isOpen) {
-      const focusable = getFocusable();
-      focusable && focusable[0]?.focus();
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      navToggle?.focus();
-    }
-  };
-
-  navToggle?.addEventListener('click', () => setDrawerState(true));
-  overlay?.addEventListener('click', () => setDrawerState(false));
-  drawerClose?.addEventListener('click', () => setDrawerState(false));
-  drawerLinks?.addEventListener('click', (e) => {
-    if (e.target instanceof HTMLAnchorElement) {
-      setDrawerState(false);
-    }
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (!drawerOpen) return;
-    if (e.key === 'Escape') {
-      setDrawerState(false);
-      return;
-    }
-    if (e.key === 'Tab') {
-      const focusable = getFocusable();
-      if (!focusable || focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
+  navLinks?.addEventListener('click', (e) => {
+    if (e.target instanceof HTMLAnchorElement && navLinks.classList.contains('open')) {
+      navLinks.classList.remove('open');
+      navToggle?.setAttribute('aria-expanded', 'false');
     }
   });
 }
